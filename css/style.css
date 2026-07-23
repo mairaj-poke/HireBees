@@ -247,6 +247,30 @@ color:#fff;
 
 /* ======================== */
 
+.nav-wrapper{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:82px;
+}
+
+nav{
+    margin-left:auto;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.logo img{
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    display:block;
+}
+
 .navbar{
 
 position:fixed;
