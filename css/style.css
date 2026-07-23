@@ -279,6 +279,14 @@ justify-content:space-between;
 
 }
 
+.logo img{
+    width:56px;
+    height:56px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
+}
+
 .logo{
 display:flex;
 align-items:center;
