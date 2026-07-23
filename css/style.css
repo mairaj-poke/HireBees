@@ -284,35 +284,21 @@ display:flex;
 align-items:center;
 gap:14px;
 }
-
 .logo-content{
 display:flex;
 flex-direction:column;
 justify-content:center;
+transform:translateY(5px);
 }
 
 .logo-content h2{
-font-size:24px;
-font-weight:800;
-color:var(--dark);
 line-height:1;
-margin:0 0 4px 0;
+margin:0;
 }
 
 .logo-content span{
-font-size:13px;
-color:var(--muted);
+margin-top:3px;
 line-height:1.2;
-margin:0;
-}
-.nav-menu{
-
-display:flex;
-
-gap:38px;
-
-list-style:none;
-
 }
 
 .nav-menu a{
