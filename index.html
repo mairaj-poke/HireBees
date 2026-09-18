@@ -20,7 +20,6 @@ content="HireBees is a premium recruitment and staffing company helping business
 
 <link rel="stylesheet" href="css/style.css">
 
-<link rel="icon" href="assets/favicon.png">
 
 </head>
 
@@ -74,6 +73,22 @@ Hire Talent
 
 </a>
 
+<button class="mobile-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+<a href="#home">Home</a>
+<a href="#services">Services</a>
+<a href="#industries">Industries</a>
+<a href="#why">Why HireBees</a>
+<a href="#process">Process</a>
+<a href="#contact">Contact</a>
+<a href="#contact">Hire Talent</a>
 </div>
 
 </header>
@@ -1225,34 +1240,58 @@ Tell us about your recruitment requirements and one of our consultants will get 
 
 </div>
 
-<form>
+<form id="enquiryForm" action="https://formsubmit.co/support@hirebees.co.in" method="POST">
+
+<input type="hidden" name="_subject" value="New HireBees Website Enquiry">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="true">
+<input type="hidden" name="_url" value="https://hirebees.co.in/">
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
 
 <input
 type="text"
+name="company_name"
+id="companyName"
 placeholder="Company Name"
+autocomplete="organization"
 required>
 
 <input
 type="text"
+name="name"
+id="contactName"
 placeholder="Your Name"
+autocomplete="name"
 required>
 
 <input
 type="email"
+name="email"
+id="email"
 placeholder="Business Email"
+autocomplete="email"
 required>
 
 <input
 type="tel"
+name="phone"
+id="phone"
 placeholder="Phone Number"
+autocomplete="tel"
 required>
 
 <textarea
 rows="6"
-placeholder="Tell us about your hiring requirement"></textarea>
+name="hiring_requirement"
+id="hiringRequirement"
+placeholder="Tell us about your hiring requirement"
+required></textarea>
+
+<div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
 
 <button
 type="submit"
+id="submitEnquiry"
 class="primary-btn">
 
 Submit Enquiry
@@ -1344,7 +1383,7 @@ Get In Touch
 
 <p>
 
-hello@hirebees.in
+support@hirebees.co.in
 
 </p>
 
@@ -1377,11 +1416,14 @@ India
 </footer>
 
 <button
-id="scrollTop">
+id="scrollTop"
+aria-label="Back to top">
 
 ↑
 
 </button>
+
+<script src="js/main.js"></script>
 
 </body>
 

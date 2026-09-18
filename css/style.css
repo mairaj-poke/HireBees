@@ -1511,3 +1511,452 @@ line-height:1.8;
   background: linear-gradient(var(--primary), var(--secondary));
   border-radius: 999px;
 }
+
+/* =====================================================
+   FINAL RESPONSIVE + HEADER SAFETY OVERRIDES
+   ===================================================== */
+
+html {
+  scroll-padding-top: 105px;
+}
+
+section[id] {
+  scroll-margin-top: 105px;
+}
+
+.nav-wrapper {
+  min-width: 0;
+  gap: 24px;
+}
+
+.logo {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.logo-content {
+  min-width: 0;
+}
+
+.logo-content h2,
+.logo-content span {
+  white-space: nowrap;
+}
+
+nav {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.nav-menu {
+  justify-content: flex-end;
+  gap: clamp(18px, 2.1vw, 34px);
+  white-space: nowrap;
+}
+
+.navbar > .container > .primary-btn,
+.nav-wrapper > .primary-btn {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 148px;
+  padding: 14px 24px;
+  white-space: nowrap;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--dark);
+  transition: .25s ease;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 4%;
+  right: 4%;
+  padding: 12px;
+  background: rgba(255, 255, 255, .98);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, .16);
+}
+
+.mobile-menu.open {
+  display: grid;
+}
+
+.mobile-menu a {
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-weight: 650;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a:focus-visible {
+  background: #EFF6FF;
+  color: var(--primary);
+  outline: none;
+}
+
+.navbar.scrolled {
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 8px 30px rgba(15, 23, 42, .06);
+}
+
+.hero-image {
+  min-width: 0;
+}
+
+.workflow-card {
+  width: 100%;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.floating-card {
+  z-index: 3;
+}
+
+.contact h2,
+.why-left h2 {
+  color: var(--dark);
+  line-height: 1.15;
+}
+
+.contact form .primary-btn {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.form-status {
+  display: none;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-status.show {
+  display: block;
+}
+
+.form-status.success {
+  color: #166534;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+}
+
+.form-status.error {
+  color: #991B1B;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+}
+
+@media (max-width: 1180px) {
+  .nav-menu {
+    gap: 18px;
+  }
+
+  .navbar > .container > .primary-btn,
+  .nav-wrapper > .primary-btn {
+    min-width: 132px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .nav-wrapper {
+    height: 82px;
+  }
+
+  .nav-wrapper > nav,
+  .nav-wrapper > .primary-btn {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .hero {
+    padding-top: 145px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    position: fixed;
+  }
+
+  .nav-wrapper {
+    height: 76px;
+    gap: 12px;
+  }
+
+  .logo {
+    gap: 10px;
+  }
+
+  .logo img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .logo-content {
+    transform: translateY(2px);
+  }
+
+  .logo-content h2 {
+    font-size: 24px;
+  }
+
+  .logo-content span {
+    display: block;
+    font-size: 11px;
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-menu {
+    left: 4%;
+    right: 4%;
+  }
+
+  .hero {
+    padding-top: 125px;
+    padding-bottom: 80px;
+  }
+
+  .hero-grid {
+    gap: 46px;
+  }
+
+  .hero-content {
+    text-align: left;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 10vw, 54px);
+    line-height: 1.02;
+    margin-bottom: 22px;
+  }
+
+  .hero p {
+    font-size: 17px;
+    margin-bottom: 30px;
+  }
+
+  .hero-points {
+    grid-template-columns: 1fr;
+    gap: 13px;
+    margin-bottom: 30px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .hero-buttons .primary-btn,
+  .hero-buttons .secondary-btn {
+    width: 100%;
+  }
+
+  .hero-image {
+    width: 100%;
+  }
+
+  .workflow-card {
+    padding: 24px;
+    border-radius: 22px;
+  }
+
+  .workflow-header {
+    margin-bottom: 22px;
+  }
+
+  .workflow-header h3 {
+    font-size: 22px;
+  }
+
+  .workflow-header span {
+    font-size: 13px;
+  }
+
+  .workflow {
+    gap: 10px;
+  }
+
+  .workflow-step {
+    padding: 14px;
+    gap: 11px;
+    font-size: 14px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    flex: 0 0 11px;
+  }
+
+  .floating-card {
+    display: none;
+  }
+
+  .trust,
+  .section {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .trust-grid,
+  .services-grid,
+  .process-wrapper,
+  .testimonial-grid,
+  .industry-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-grid {
+    gap: 16px;
+  }
+
+  .trust-card {
+    padding: 30px 22px;
+  }
+
+  .section-header {
+    margin-bottom: 42px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(30px, 8vw, 40px);
+  }
+
+  .why-grid,
+  .contact-grid {
+    gap: 38px;
+  }
+
+  .why-left h2,
+  .contact h2 {
+    font-size: clamp(32px, 8vw, 44px);
+  }
+
+  .cta {
+    padding: 72px 0;
+  }
+
+  .cta-box {
+    padding: 44px 26px;
+    border-radius: 26px;
+  }
+
+  .cta-box h2 {
+    font-size: clamp(30px, 8vw, 40px);
+  }
+
+  .cta-box .primary-btn {
+    width: 100%;
+  }
+
+  .footer {
+    padding-top: 65px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: min(92%, 420px);
+  }
+
+  .logo-content span {
+    display: none;
+  }
+
+  .logo-content h2 {
+    font-size: 22px;
+  }
+
+  .mobile-menu-toggle {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .hero-badge {
+    max-width: 100%;
+    font-size: 12px;
+    line-height: 1.35;
+    padding: 10px 14px;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  .workflow-card {
+    padding: 20px;
+  }
+
+  .workflow-header {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .service-card,
+  .process-card,
+  .testimonial-card {
+    padding: 28px;
+  }
+
+  .contact input,
+  .contact textarea {
+    font-size: 16px;
+  }
+}
+
+.contact form .primary-btn:disabled {
+  opacity: .7;
+  cursor: wait;
+  transform: none;
+}

@@ -11,15 +11,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const navbar = document.querySelector(".navbar");
 
   function handleNavbar() {
-    if (window.scrollY > 40) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
+    if (!navbar) return;
+    navbar.classList.toggle("scrolled", window.scrollY > 40);
   }
 
-  window.addEventListener("scroll", handleNavbar);
+  window.addEventListener("scroll", handleNavbar, { passive: true });
   handleNavbar();
+
+  /* ==========================================
+     Mobile Navigation
+  ========================================== */
+
+  const menuToggle = document.querySelector(".mobile-menu-toggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  function closeMobileMenu() {
+    if (!menuToggle || !mobileMenu) return;
+    menuToggle.classList.remove("active");
+    mobileMenu.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Open menu");
+  }
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = mobileMenu.classList.toggle("open");
+      menuToggle.classList.toggle("active", isOpen);
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    });
+
+    mobileMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", closeMobileMenu);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!mobileMenu.classList.contains("open")) return;
+      if (!mobileMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 1080) closeMobileMenu();
+    });
+  }
 
   /* ==========================================
      Scroll To Top
@@ -28,37 +64,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const scrollBtn = document.getElementById("scrollTop");
 
   if (scrollBtn) {
+    const updateScrollButton = () => {
+      const visible = window.scrollY > 600;
+      scrollBtn.style.opacity = visible ? "1" : "0";
+      scrollBtn.style.pointerEvents = visible ? "auto" : "none";
+    };
 
-    scrollBtn.style.opacity = "0";
-    scrollBtn.style.pointerEvents = "none";
-
-    window.addEventListener("scroll", () => {
-
-      if (window.scrollY > 600) {
-
-        scrollBtn.style.opacity = "1";
-        scrollBtn.style.pointerEvents = "auto";
-
-      } else {
-
-        scrollBtn.style.opacity = "0";
-        scrollBtn.style.pointerEvents = "none";
-
-      }
-
-    });
+    updateScrollButton();
+    window.addEventListener("scroll", updateScrollButton, { passive: true });
 
     scrollBtn.addEventListener("click", () => {
-
-      window.scrollTo({
-
-        top:0,
-        behavior:"smooth"
-
-      });
-
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
-
   }
 
   /* ==========================================
@@ -66,255 +83,222 @@ document.addEventListener("DOMContentLoaded", () => {
   ========================================== */
 
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+      const href = this.getAttribute("href");
+      if (!href || href === "#") return;
 
-    anchor.addEventListener("click", function(e){
+      const target = document.querySelector(href);
+      if (!target) return;
 
-      const target=document.querySelector(this.getAttribute("href"));
-
-      if(target){
-
-        e.preventDefault();
-
-        target.scrollIntoView({
-
-          behavior:"smooth",
-          block:"start"
-
-        });
-
-      }
-
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-
   });
 
   /* ==========================================
      FAQ Accordion
   ========================================== */
 
-  document.querySelectorAll(".faq-item").forEach(item=>{
+  document.querySelectorAll(".faq-item").forEach(item => {
+    const button = item.querySelector("button");
+    const content = item.querySelector(".faq-content");
+    if (!button || !content) return;
 
-    const button=item.querySelector("button");
-    const content=item.querySelector(".faq-content");
+    content.style.maxHeight = "0px";
+    content.style.overflow = "hidden";
+    content.style.transition = ".35s ease";
 
-    content.style.maxHeight="0px";
-    content.style.overflow="hidden";
-    content.style.transition=".35s";
+    button.addEventListener("click", () => {
+      const open = item.classList.contains("active");
 
-    button.addEventListener("click",()=>{
-
-      const open=item.classList.contains("active");
-
-      document.querySelectorAll(".faq-item").forEach(i=>{
-
+      document.querySelectorAll(".faq-item").forEach(i => {
         i.classList.remove("active");
-
-        const c=i.querySelector(".faq-content");
-
-        c.style.maxHeight="0px";
-
+        const c = i.querySelector(".faq-content");
+        if (c) c.style.maxHeight = "0px";
       });
 
-      if(!open){
-
+      if (!open) {
         item.classList.add("active");
-
-        content.style.maxHeight=content.scrollHeight+"px";
-
+        content.style.maxHeight = content.scrollHeight + "px";
       }
-
     });
-
   });
 
   /* ==========================================
      Animated Numbers
   ========================================== */
 
-  const counters=document.querySelectorAll(".trust-card h2");
+  const counters = document.querySelectorAll(".trust-card h2");
 
-  const counterObserver=new IntersectionObserver(entries=>{
+  if ("IntersectionObserver" in window && counters.length) {
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-    entries.forEach(entry=>{
+        const counter = entry.target;
+        const txt = counter.innerText;
+        const number = parseInt(txt.replace(/\D/g, ""), 10);
 
-      if(!entry.isIntersecting) return;
+        if (Number.isNaN(number)) return;
 
-      const counter=entry.target;
+        let current = 0;
+        const speed = Math.max(1, Math.ceil(number / 80));
 
-      const txt=counter.innerText;
+        const update = () => {
+          current += speed;
+          if (current > number) current = number;
+          counter.innerText = current + "+";
+          if (current < number) requestAnimationFrame(update);
+        };
 
-      const number=parseInt(txt.replace(/\D/g,""));
+        update();
+        counterObserver.unobserve(counter);
+      });
+    }, { threshold: .6 });
 
-      if(isNaN(number)) return;
-
-      let current=0;
-
-      const speed=Math.ceil(number/80);
-
-      const update=()=>{
-
-        current+=speed;
-
-        if(current>number) current=number;
-
-        counter.innerText=current+"+";
-
-        if(current<number){
-
-          requestAnimationFrame(update);
-
-        }
-
-      };
-
-      update();
-
-      counterObserver.unobserve(counter);
-
-    });
-
-  },{
-
-    threshold:.6
-
-  });
-
-  counters.forEach(c=>counterObserver.observe(c));
+    counters.forEach(counter => counterObserver.observe(counter));
+  }
 
   /* ==========================================
      Reveal Animation
   ========================================== */
 
-  const revealItems=document.querySelectorAll(
-
-".service-card,.industry-card,.process-card,.testimonial-card,.benefit-item,.glass-card,.trust-card"
-
+  const revealItems = document.querySelectorAll(
+    ".service-card,.industry-card,.process-card,.testimonial-card,.benefit-item,.glass-card,.trust-card"
   );
 
-  revealItems.forEach(item=>{
-
-    item.style.opacity="0";
-
-    item.style.transform="translateY(40px)";
-
-    item.style.transition=".7s ease";
-
-  });
-
-  const revealObserver=new IntersectionObserver(entries=>{
-
-    entries.forEach(entry=>{
-
-      if(entry.isIntersecting){
-
-        entry.target.style.opacity="1";
-
-        entry.target.style.transform="translateY(0)";
-
-      }
-
+  if ("IntersectionObserver" in window) {
+    revealItems.forEach(item => {
+      item.style.opacity = "0";
+      item.style.transform = "translateY(40px)";
+      item.style.transition = ".7s ease";
     });
 
-  },{
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .18 });
 
-    threshold:.18
-
-  });
-
-  revealItems.forEach(item=>revealObserver.observe(item));
+    revealItems.forEach(item => revealObserver.observe(item));
+  }
 
   /* ==========================================
      Active Navigation
   ========================================== */
 
-  const sections=document.querySelectorAll("section[id]");
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-menu a");
 
-  const navLinks=document.querySelectorAll(".nav-menu a");
+  if (sections.length && navLinks.length && "IntersectionObserver" in window) {
+    const activeObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(link => {
+          link.classList.toggle(
+            "active",
+            link.getAttribute("href") === "#" + entry.target.id
+          );
+        });
+      });
+    }, { rootMargin: "-35% 0px -55% 0px", threshold: 0 });
 
-  window.addEventListener("scroll",()=>{
-
-    let current="";
-
-    sections.forEach(section=>{
-
-      const top=section.offsetTop-120;
-
-      const height=section.offsetHeight;
-
-      if(pageYOffset>=top){
-
-        current=section.getAttribute("id");
-
-      }
-
-    });
-
-    navLinks.forEach(link=>{
-
-      link.classList.remove("active");
-
-      if(link.getAttribute("href")==="#"+current){
-
-        link.classList.add("active");
-
-      }
-
-    });
-
-  });
+    sections.forEach(section => activeObserver.observe(section));
+  }
 
   /* ==========================================
      Floating Hero Cards
   ========================================== */
 
-  const cards=document.querySelectorAll(".floating-card");
+  const cards = document.querySelectorAll(".floating-card");
 
-  window.addEventListener("mousemove",(e)=>{
+  if (cards.length && window.matchMedia("(pointer:fine)").matches) {
+    window.addEventListener("mousemove", e => {
+      const x = (e.clientX / window.innerWidth) - 0.5;
+      const y = (e.clientY / window.innerHeight) - 0.5;
 
-    const x=(e.clientX/window.innerWidth)-0.5;
-
-    const y=(e.clientY/window.innerHeight)-0.5;
-
-    cards.forEach((card,index)=>{
-
-      const depth=(index+1)*12;
-
-      card.style.transform=
-
-      `translate(${x*depth}px,${y*depth}px)`;
-
-    });
-
-  });
+      cards.forEach((card, index) => {
+        const depth = (index + 1) * 8;
+        card.style.transform = `translate(${x * depth}px,${y * depth}px)`;
+      });
+    }, { passive: true });
+  }
 
   /* ==========================================
      Button Ripple
   ========================================== */
 
-  document.querySelectorAll(".primary-btn").forEach(btn=>{
+  document.querySelectorAll(".primary-btn").forEach(btn => {
+    btn.addEventListener("click", function(e) {
+      if (this.tagName === "BUTTON" && this.type === "submit") return;
 
-    btn.addEventListener("click",function(e){
-
-      const ripple=document.createElement("span");
-
-      ripple.className="ripple";
-
-      const rect=this.getBoundingClientRect();
-
-      ripple.style.left=e.clientX-rect.left+"px";
-
-      ripple.style.top=e.clientY-rect.top+"px";
-
+      const ripple = document.createElement("span");
+      ripple.className = "ripple";
+      const rect = this.getBoundingClientRect();
+      ripple.style.left = (e.clientX - rect.left) + "px";
+      ripple.style.top = (e.clientY - rect.top) + "px";
       this.appendChild(ripple);
 
-      setTimeout(()=>{
-
-        ripple.remove();
-
-      },700);
-
+      setTimeout(() => ripple.remove(), 700);
     });
-
   });
+
+  /* ==========================================
+     HireBees Enquiry Form
+     Static-site email delivery via FormSubmit.
+  ========================================== */
+
+  const enquiryForm = document.getElementById("enquiryForm");
+  const formStatus = document.getElementById("formStatus");
+  const submitButton = document.getElementById("submitEnquiry");
+
+  if (enquiryForm && formStatus && submitButton) {
+    enquiryForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!enquiryForm.checkValidity()) {
+        enquiryForm.reportValidity();
+        return;
+      }
+
+      formStatus.className = "form-status show";
+      formStatus.textContent = "Sending your enquiry...";
+      submitButton.disabled = true;
+      submitButton.style.opacity = ".7";
+      submitButton.style.cursor = "wait";
+
+      try {
+        const response = await fetch("https://formsubmit.co/ajax/support@hirebees.co.in", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(Object.fromEntries(new FormData(enquiryForm)))
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || data.success === false) {
+          throw new Error(data.message || "The enquiry could not be sent.");
+        }
+
+        formStatus.className = "form-status show success";
+        formStatus.textContent = "Thank you. Your enquiry has been sent successfully. We will get back to you shortly.";
+        enquiryForm.reset();
+      } catch (error) {
+        formStatus.className = "form-status show error";
+        formStatus.textContent = "We couldn't send the enquiry right now. Please try again or email support@hirebees.co.in.";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.style.opacity = "";
+        submitButton.style.cursor = "";
+      }
+    });
+  }
 
 });

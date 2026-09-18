@@ -1,0 +1,20 @@
+HIREBEES WEBSITE - ENQUIRY FORM SETUP
+
+The enquiry form is configured to send submissions to:
+support@hirebees.co.in
+
+How the form works:
+1. The website is static and can remain hosted on GitHub Pages.
+2. The form uses FormSubmit for email delivery, so no PHP/Node/server is required.
+3. Submit the form once after deploying the updated website.
+4. Check support@hirebees.co.in for the FormSubmit activation/confirmation email.
+5. Confirm/activate the form from that email.
+6. After activation, future enquiries will be delivered to support@hirebees.co.in.
+
+IMPORTANT:
+- Make sure support@hirebees.co.in is an active mailbox before testing.
+- Do not remove the name attributes from the form fields.
+- Keep the form endpoint in index.html as:
+  https://formsubmit.co/support@hirebees.co.in
+
+The website also includes a mobile navigation menu, responsive layouts, safer header spacing, and an in-page success/error message after submission.
