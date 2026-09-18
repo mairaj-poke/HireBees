@@ -446,3 +446,23 @@ font-size:24px;
 }
 
 }
+
+
+/* ===========================================
+   FAQ RESPONSIVE OVERRIDES
+=========================================== */
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .faq-wrapper {
+    width: 100%;
+  }
+
+  .faq-question {
+    white-space: normal;
+  }
+}
