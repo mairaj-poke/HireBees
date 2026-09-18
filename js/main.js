@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const faqItems = document.querySelectorAll(".faq-item");
 
-  faqItems.forEach(item => {
+  faqItems.forEach((item) => {
 
     const question = item.querySelector(".faq-question");
     const answer = item.querySelector(".faq-answer");
@@ -144,17 +144,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!question || !answer) return;
 
-    /* Initial state */
-    answer.style.display = "none";
+    // Make sure every answer starts closed
+    answer.style.setProperty("display", "none", "important");
+    answer.style.setProperty("max-height", "none", "important");
+    answer.style.setProperty("overflow", "visible", "important");
 
+    question.setAttribute("type", "button");
     question.setAttribute("aria-expanded", "false");
 
-    question.addEventListener("click", () => {
+    question.addEventListener("click", function () {
 
       const isOpen = item.classList.contains("active");
 
-      /* Close all FAQ items */
-      faqItems.forEach(otherItem => {
+      // Close all FAQs
+      faqItems.forEach((otherItem) => {
 
         otherItem.classList.remove("active");
 
@@ -168,7 +171,17 @@ document.addEventListener("DOMContentLoaded", () => {
           otherItem.querySelector(".faq-question");
 
         if (otherAnswer) {
-          otherAnswer.style.display = "none";
+          otherAnswer.style.setProperty(
+            "display",
+            "none",
+            "important"
+          );
+
+          otherAnswer.style.setProperty(
+            "max-height",
+            "none",
+            "important"
+          );
         }
 
         if (otherIcon) {
@@ -183,13 +196,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-
-      /* Open clicked FAQ */
+      // Open clicked FAQ
       if (!isOpen) {
 
         item.classList.add("active");
 
-        answer.style.display = "block";
+        answer.style.setProperty(
+          "display",
+          "block",
+          "important"
+        );
+
+        answer.style.setProperty(
+          "max-height",
+          "none",
+          "important"
+        );
+
+        answer.style.setProperty(
+          "overflow",
+          "visible",
+          "important"
+        );
 
         question.setAttribute(
           "aria-expanded",
@@ -200,10 +228,10 @@ document.addEventListener("DOMContentLoaded", () => {
           icon.textContent = "−";
         }
       }
+
     });
+
   });
-
-
   /* ==========================================
      Animated Numbers
   ========================================== */
